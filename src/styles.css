@@ -1,0 +1,22 @@
+/* Base: mobile (320px) */
+body {
+  width: 100%;
+  padding: 1rem;
+  /* Otras reglas relevantes para móvil */
+}
+
+/* Mejora incremental: tablet */
+@media (min-width: 768px) {
+  body {
+    padding: 1.5rem;
+  }
+}
+
+/* Mejora incremental: desktop */
+@media (min-width: 1024px) {
+  body {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+}
