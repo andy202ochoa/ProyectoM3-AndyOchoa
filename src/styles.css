@@ -1,10 +1,71 @@
 /* Base: mobile (320px) */
+body{
+  background-color: rgb(120, 117, 113);
+  display: flex;
+  justify-content: center; /* centra horizontal */
+  min-height: 100vh;
+  margin: 0;
+
+}
 .chat {
+
+  background-color: white;
   width: 100%;
   padding: 1rem;
   /* Otras reglas relevantes para móvil */
 }
+header{
+ border-bottom: 2px solid red;;
+}
+.chatMessages{
+  display: flex;
+  flex-direction: column;
 
+}
+.chatBot{
+  max-width: 70%; 
+  padding: 8px 12px;
+  margin: 5px 0;
+  border-radius: 10px;
+  background-color: #eee;
+}
+.chatUser{
+  max-Width:70%;
+  align-self: flex-end;         /* lo empuja a la derecha */
+  background-color: #af4c98; /* color diferente */
+  color: white;
+  border-radius: 10px;
+  margin: 5px 0;
+  padding: 8px 12px;
+  
+
+}
+.chatBot,
+.chatUser {
+  max-width: 70%;
+  width: fit-content;
+  word-wrap: break-word;      /* 👈 rompe palabras largas */
+  overflow-wrap: break-word;  /* 👈 versión moderna */
+}
+.chatComposer{
+  display: flex;
+  border-radius: 10px;
+  padding: 8px 12px;;
+}
+
+.chatInput{
+  display: flex;
+  border-radius: 10px;
+  padding: 8px 12px;
+
+}
+.chatSend{
+  
+  border-radius: 10px;
+  
+  padding: 8px 12px;
+
+}
 /* Mejora incremental: tablet */
 @media (min-width: 768px) {
   .chat {
