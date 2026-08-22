@@ -2,6 +2,9 @@
 * {
   box-sizing: border-box;
 }
+:root{
+  
+}
 body{
   background-color: rgb(120, 117, 113);
   display: flex;
@@ -16,6 +19,14 @@ html, body {
   margin: 0;
   overflow-x: hidden; 
 }
+.menu{
+
+  display: flex;
+  font-size: 40px;
+  padding: 10px;
+  gap: 1rem;
+}
+
 .chat {
 
   display: flex;
