@@ -1,24 +1,20 @@
 const form = document.getElementById("chatForm");
-const input = document.getElementById("chatInput");
-const chat = document.getElementById("chatMessages");
+    const input = document.getElementById("chatInput");
+    const chat = document.getElementById("chatMessages");
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault(); // evita que recargue la página
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-  const mensaje = input.value.trim();
+      const mensaje = input.value.trim();
+      if (!mensaje) return;
 
-  if (mensaje === "") return;
-   // crear el mensaje
-  const div = document.createElement("div");
-  div.classList.add("chatUser");
-  div.textContent = mensaje;
+      const div = document.createElement("div");
+      div.classList.add("chatUser");
+      div.textContent = mensaje;
 
-  // agregar al chat
-  chat.appendChild(div);
+      chat.appendChild(div);
+      input.value = "";
 
-  // limpiar input
-  input.value = "";
-
-  // scroll automático hacia abajo
-  chat.scrollTop = chat.scrollHeight;
-});
+      chat.scrollTop = chat.scrollHeight;
+    });
+  

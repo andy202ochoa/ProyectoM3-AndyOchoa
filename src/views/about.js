@@ -1,8 +1,10 @@
-export default class {
-  async getHtml() {
+export default class About {
+  getHtml() {
     return `
-      <h1>About</h1>
-      <p>Proyecto SPA nivel bootcamp 😎</p>
+      <div>
+        <h1>About</h1>
+        <p>Bienvenido a la SPA awebo</p>
+      </div>
     `;
   }
 }

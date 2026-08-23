@@ -2,13 +2,13 @@ import { routes } from "./routes.js";
 
 const app = document.getElementById("app");
 
-// navegar sin recargar
+// navegación sin recargar
 const navigateTo = (url) => {
   history.pushState(null, null, url);
   router();
 };
 
-// detectar clicks en links
+// interceptar clicks SPA
 document.addEventListener("click", (e) => {
   if (e.target.matches("[data-link]")) {
     e.preventDefault();
@@ -18,12 +18,10 @@ document.addEventListener("click", (e) => {
 
 // router principal
 const router = async () => {
-  const potentialMatches = routes.map(route => {
-    return {
-      route,
-      isMatch: location.pathname === route.path
-    };
-  });
+  const potentialMatches = routes.map(route => ({
+    route,
+    isMatch: location.pathname === route.path
+  }));
 
   let match = potentialMatches.find(p => p.isMatch);
 
@@ -35,11 +33,17 @@ const router = async () => {
   }
 
   const view = new match.route.view();
+
   app.innerHTML = await view.getHtml();
+
+  // 🔥 IMPORTANTE: activar lógica del chat u otras vistas
+  if (view.afterRender) {
+    view.afterRender();
+  }
 };
 
-// manejar botón atrás/adelante
+// back/forward
 window.addEventListener("popstate", router);
 
-// cargar inicial
+// iniciar app
 router();
