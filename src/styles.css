@@ -19,12 +19,17 @@ html, body {
   margin: 0;
   overflow-x: hidden; 
 }
-.menu{
+.navbar{
 
   display: flex;
   font-size: 40px;
   padding: 10px;
   gap: 1rem;
+}
+.navbar a {
+  color: rgb(59, 59, 59);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .chat {
