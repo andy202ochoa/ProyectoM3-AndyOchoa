@@ -2,9 +2,7 @@
 * {
   box-sizing: border-box;
 }
-:root{
-  
-}
+
 body{
   background-color: rgb(120, 117, 113);
   display: flex;
@@ -12,6 +10,7 @@ body{
   justify-content: center; /* centra horizontal */
   min-height: 100vh;
   margin: 0;
+  font-family: sans-serif;
 
 }
 html, body {
@@ -20,17 +19,19 @@ html, body {
   overflow-x: hidden; 
 }
 .navbar{
-
   display: flex;
-  font-size: 40px;
+  gap: 10px;
   padding: 10px;
-  gap: 1rem;
+  background: #222;
 }
 .navbar a {
-  color: rgb(59, 59, 59);
+  color: white;
   text-decoration: none;
-  cursor: pointer;
 }
+#app {
+  padding: 20px;
+}
+
 
 .chat {
 
