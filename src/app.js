@@ -1,10 +1,23 @@
 import { routes } from "./routes.js";
+import NotFound from "./views/notFound.js";
 
 const app = document.getElementById("app");
 
+// 🔧 normalizar rutas (CLAVE)
+const normalizePath = (path) => {
+  if (
+    path === "/" ||
+    path === "/index.html" ||
+    path === "/src/index.html"
+  ) return "/";
+
+  return path.replace(/\/+$/, "") || "/";
+};
+
 // navegación sin recargar
 const navigateTo = (url) => {
-  history.pushState(null, null, url);
+  const path = new URL(url).pathname;
+  history.pushState(null, null, path);
   router();
 };
 
@@ -18,31 +31,35 @@ document.addEventListener("click", (e) => {
 
 // router principal
 const router = async () => {
+
+  const path = normalizePath(location.pathname);
+
   const potentialMatches = routes.map(route => ({
     route,
-    isMatch: location.pathname === route.path
+    isMatch: path === route.path
   }));
 
   let match = potentialMatches.find(p => p.isMatch);
 
+  // 🔥 404
   if (!match) {
-    match = {
-      route: routes[0],
-      isMatch: true
-    };
+    const view = new NotFound();
+    app.innerHTML = view.getHtml();
+
+    if (view.afterRender) view.afterRender();
+    return;
   }
 
+  // vista válida
   const view = new match.route.view();
-
   app.innerHTML = await view.getHtml();
 
-  // 🔥 IMPORTANTE: activar lógica del chat u otras vistas
   if (view.afterRender) {
     view.afterRender();
   }
 };
 
-// back/forward
+// back / forward
 window.addEventListener("popstate", router);
 
 // iniciar app
