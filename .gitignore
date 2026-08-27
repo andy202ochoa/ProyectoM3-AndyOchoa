@@ -1,1 +1,5 @@
 .env
+nove_modules
+.env.local
+.env*.local
+.vercel

@@ -1,0 +1,27 @@
+{
+  "name": "proyectom3-andyochoa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andy202ochoa/ProyectoM3-AndyOchoa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/andy202ochoa/ProyectoM3-AndyOchoa/issues"
+  },
+  "homepage": "https://github.com/andy202ochoa/ProyectoM3-AndyOchoa#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1"
+  }
+}
