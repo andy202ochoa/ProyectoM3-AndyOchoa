@@ -198,59 +198,76 @@ html, body {
 /* ------------------------HOME--------------------- */
 .home {
   width: 100%;
+  padding: 15px;
   display: flex;
   justify-content: center;
-  padding: 20px;
+  background: radial-gradient(circle at top, #0a0a14, #050508);
 }
 
 .homeContainer {
-  max-width: 1000px;
   width: 100%;
-  background: white;
-  padding: 30px;
+  background: rgba(10, 10, 20, 0.9);
+  padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border: 1px solid #00f0ff;
+  box-shadow: 0 0 15px #00f0ff33;
   text-align: center;
 }
 
+/* TITULOS */
+
 .homeTitle {
-  font-size: 32px;
+  font-size: 24px;
   margin-bottom: 10px;
+  color: #00f0ff;
+  text-shadow: 0 0 8px #00f0ff;
 }
 
 .homeSubtitle {
-  color: #555;
-  margin-bottom: 30px;
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 20px;
 }
 
 /* GRID PERSONAJES */
+
 .characters {
   display: grid;
-  gap: 20px;
+  grid-template-columns: 1fr;
+  gap: 15px;
 }
 
-/* responsive */
-@media (min-width: 768px) {
-  .characters {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+/* CARDS */
 
 .characterCard {
-  background: #f5f5f5;
-  padding: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 12px;
   border-radius: 10px;
-  text-align: center;
+  border: 1px solid #ff00ff;
+
+  /* glow */
+  box-shadow: 0 0 10px #ff00ff33;
+  transition: 0.3s;
+}
+.characterCard p{
+  color:#ff00ff
+
+}
+.characterCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px #ff00ff88;
 }
 
-/* espacio para imagen */
+/* IMAGEN */
+
 .characterImg {
   width: 100%;
-  height: 180px;
-  background: #ddd;
+  height: 150px;
+  background: #111;
   border-radius: 10px;
   margin-bottom: 10px;
   overflow: hidden;
+  border: 1px solid #00f0ff;
 }
 
 .characterImg img {
@@ -259,71 +276,147 @@ html, body {
   object-fit: cover;
 }
 
-/* botón */
+/* BOTÓN */
+
 .homeButton {
-  display: inline-block;
-  margin-top: 25px;
-  padding: 10px 15px;
-  background: #222;
-  color: white;
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+
+  background: linear-gradient(90deg, #ff00ff, #00f0ff);
+  color: black;
   text-decoration: none;
   border-radius: 8px;
+  font-weight: bold;
+
+  box-shadow: 0 0 10px #00f0ff;
+  transition: 0.3s;
 }
 
 .homeButton:hover {
-  background: #444;
+  box-shadow: 0 0 20px #00f0ff;
+  transform: scale(1.03);
+}
+.homeContainer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  pointer-events: none;
+  box-shadow: 0 0 40px #00f0ff22;
 }
 /*------------------------ABOUT----------------------*/
 .about {
   width: 100%;
+  padding: 20px;
   display: flex;
   justify-content: center;
-  padding: 20px;
+  background: radial-gradient(circle at top, #0a0a14, #050508);
 }
+
+/* CONTENEDOR */
 
 .aboutContainer {
-  max-width: 700px;
-  background: white;
-  padding: 30px;
+  width: 100%;
+  max-width: 900px;
+  padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  text-align: center;
+  background: rgba(10, 10, 20, 0.9);
+  border: 1px solid #00f0ff;
+  box-shadow: 0 0 15px #00f0ff33;
 }
+
+/* TITULO */
 
 .aboutTitle {
-  margin-bottom: 10px;
-  font-size: 28px;
+  font-size: 26px;
+  margin-bottom: 15px;
+  color: #00f0ff;
+  text-shadow: 0 0 8px #00f0ff;
 }
+
+/* TEXTO */
 
 .aboutText {
-  color: #444;
+  font-size: 14px;
+  color: #ccc;
   margin-bottom: 20px;
+  line-height: 1.6;
 }
 
+/* TARJETAS */
+
 .aboutCard {
-  text-align: left;
-  background: #f5f5f5;
-  padding: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid #ff00ff;
   border-radius: 10px;
-  margin-bottom: 20px;
+  padding: 15px;
+  margin-bottom: 15px;
+
+  /* glow */
+  box-shadow: 0 0 10px #ff00ff33;
+  transition: 0.3s;
 }
+
+.aboutCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px #ff00ff88;
+}
+
+/* TITULOS TARJETA */
+
+.aboutCard h2 {
+  color: #ff00ff;
+  margin-bottom: 10px;
+  text-shadow: 0 0 6px #ff00ff;
+}
+
+/* LISTAS */
 
 .aboutCard ul {
   padding-left: 20px;
 }
 
-.aboutButton {
-  display: inline-block;
-  padding: 10px 15px;
-  background: #222;
-  color: white;
+.aboutCard li {
+  margin-bottom: 5px;
+  color: #aaa;
+}
+
+/* LINKS */
+
+.aboutCard a {
+  color: #00f0ff;
   text-decoration: none;
+}
+
+.aboutCard a:hover {
+  text-shadow: 0 0 6px #00f0ff;
+}
+
+/* BOTÓN */
+
+.aboutButton {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  padding: 12px;
+
+  background: linear-gradient(90deg, #ff00ff, #00f0ff);
+  color: black;
+  font-weight: bold;
+
   border-radius: 8px;
-  transition: 0.2s;
+  text-decoration: none;
+
+  box-shadow: 0 0 10px #00f0ff;
+  transition: 0.3s;
 }
 
 .aboutButton:hover {
-  background: #444;
+  box-shadow: 0 0 20px #00f0ff;
+  transform: scale(1.02);
 }
 /*-------------------NOT FOUND--------------------*/
 .notFound {
@@ -375,12 +468,13 @@ html, body {
 }
 /* Mejora incremental: tablet */
 @media (min-width: 768px) {
+  
 
   .navbar {
     gap: 20px;
     padding: 15px;
   }
-
+/*-----------------CHAT-------------------*/
   #app {
     padding: 20px;
   }
@@ -399,9 +493,33 @@ html, body {
    .mobileSearch {
     display: none;
   }
+  /*-----------------HOME-------------------*/
+   .homeTitle {
+    font-size: 28px;
+  }
 
+  .characters {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
+  .characterImg {
+    height: 170px;
+  }
+
+  .homeButton {
+    width: auto;
+    display: inline-block;
+  }
+  /*-----------------ABOUT-------------------*/
+ .aboutTitle {
+    font-size: 30px;
+  }
+
+  .aboutText {
+    font-size: 16px;
+  }
 }
+
 
 /* Mejora incremental: desktop */
 @media (min-width: 1024px) {
@@ -410,12 +528,38 @@ html, body {
     max-width: 1000px;
     margin: 0 auto;
   }
+  /*-----------------CHAT-------------------*/
    .chatLayout {
     max-width: 1000px;
     margin: 0 auto;
     border-radius: 10px;
     border: 1px solid #222;
   }
-  
+  /*-----------------HOME-------------------*/
+   .homeContainer {
+    max-width: 1000px;
+    padding: 30px;
+  }
 
+  .homeTitle {
+    font-size: 32px;
+  }
+
+  .characters {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .characterImg {
+    height: 180px;
+  }
+   /*-----------------ABOUT-------------------*/
+     .aboutContainer {
+    padding: 30px;
+  }
+
+  .aboutTitle {
+    font-size: 34px;
+  }
 }
+
+
