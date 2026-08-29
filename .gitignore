@@ -1,5 +1,3 @@
 .env
-nove_modules
-.env.local
-.env*.local
-.vercel
+node_modules/
+vercel.json
