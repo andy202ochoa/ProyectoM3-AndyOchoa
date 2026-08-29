@@ -1,10 +1,4 @@
-export default async function handler(req, res) {
-  return res.status(200).json({
-    reply: "🔥 backend funcionando"
-  });
-}
-
-/*import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 
 export default async function handler(req, res) {
   const { message, character } = req.body;
@@ -29,4 +23,4 @@ export default async function handler(req, res) {
   res.status(200).json({
     reply: response.text
   });
-}*/
+}
