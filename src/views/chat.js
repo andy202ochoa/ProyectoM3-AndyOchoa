@@ -195,13 +195,61 @@ export default class Chat {
         text: mensaje
       });
 
-      this.activeChat.messages.push({
-        role: "bot",
-        text: "🔊 Señal recibida..."
-      });
+      // 👉 mensaje temporal (typing...)
+        this.activeChat.messages.push({
+          role: "bot",
+          text: "..."
+        });
 
-      document.getElementById("app").innerHTML = this.getHtml();
-      this.afterRender();
+        // 👉 render inmediato
+        document.getElementById("app").innerHTML = this.getHtml();
+        this.afterRender();
+
+        input.value = "";
+
+        // 👉 llamada a Gemini
+        fetch("/api/functions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: mensaje,
+            character: this.activeChat.name
+          })
+        })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("Error del servidor");
+          }
+          return res.json();
+        })
+        .then(data => {
+
+          const lastIndex = this.activeChat.messages.length - 1;
+
+          this.activeChat.messages[lastIndex] = {
+            role: "bot",
+            text: data.reply || "⚠️ Sin respuesta"
+          };
+
+          document.getElementById("app").innerHTML = this.getHtml();
+          this.afterRender();
+        })
+        .catch((error) => {
+
+          const lastIndex = this.activeChat.messages.length - 1;
+
+          this.activeChat.messages[lastIndex] = {
+            role: "bot",
+            text: "⚠️ No se pudo conectar con la IA"
+          };
+
+          document.getElementById("app").innerHTML = this.getHtml();
+          this.afterRender();
+
+          console.error("Error:", error);
+});
     });
     setTimeout(scrollToBottom, 0);
   }
