@@ -4,7 +4,7 @@
 }
 
 body{
-  background-color: rgb(120, 117, 113);
+  background-color: rgb(0, 0, 0);
   margin: 0;
   font-family: sans-serif;
   min-height: 100dvh;
@@ -20,13 +20,13 @@ html, body {
   gap: 20px;
   padding: 15px;
   background: #222;
-  color: white;
+  color: rgb(0, 251, 255);
   position: sticky;
   top: 0;
   z-index: 1000;
 }
 .navbar a {
-  color: white;
+  color: rgb(0, 234, 255);
   text-decoration: none;
 }
 /* CONTENEDOR SPA */

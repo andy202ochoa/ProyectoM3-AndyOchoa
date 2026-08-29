@@ -107,6 +107,15 @@ export default class Chat {
     const searchDesktop = document.getElementById("searchChat");
     const searchMobile = document.getElementById("searchMobile");
     const resultsContainer = document.getElementById("searchResults");
+    
+    const scrollToBottom = () => {
+      const container = document.querySelector(".chatMessages");
+      if (!container) return;
+
+      container.scrollTop = container.scrollHeight;
+    };
+
+    
 
     // ================= UTIL =================
     const filterChats = (query) => {
@@ -194,5 +203,6 @@ export default class Chat {
       document.getElementById("app").innerHTML = this.getHtml();
       this.afterRender();
     });
+    setTimeout(scrollToBottom, 0);
   }
 }
