@@ -1,32 +1,43 @@
-
-import { GoogleGenAI } from "@google/genai";
-
 export default async function handler(req, res) {
   try {
     const { message, character } = req.body;
 
-    const ai = new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY
-    });
+    console.log("🔑 KEY:", process.env.GEMINI_API_KEY ? "EXISTE" : "NO EXISTE");
 
     const prompt = `
-    Responde como ${character}.
-    Estilo cyberpunk, respuestas cortas.
+Responde como ${character}.
+Estilo cyberpunk, respuestas cortas.
 
-    Usuario: ${message}
-    `;
+Usuario: ${message}
+`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-    });
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [{ text: prompt }]
+            }
+          ]
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    console.log("📦 RESPUESTA COMPLETA:", JSON.stringify(data, null, 2));
 
     res.status(200).json({
-      reply: response.text
+      reply: JSON.stringify(data) // 👈 TEMPORAL para ver TODO
     });
 
   } catch (error) {
-    console.error("🔥 ERROR GEMINI:", error);
+    console.error("🔥 ERROR:", error);
 
     res.status(500).json({
       error: error.message
