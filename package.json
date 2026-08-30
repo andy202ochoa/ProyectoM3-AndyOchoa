@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/andy202ochoa/ProyectoM3-AndyOchoa/issues"
   },
-  "homepage": "https://github.com/andy202ochoa/ProyectoM3-AndyOchoa#readme"
+  "homepage": "https://github.com/andy202ochoa/ProyectoM3-AndyOchoa#readme",
+  "dependencies": {
+    "@google/genai": "^2.19.0"
+  }
 }
