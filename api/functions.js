@@ -1,33 +1,35 @@
+
+import { GoogleGenAI } from "@google/genai";
+
 export default async function handler(req, res) {
-  return res.status(200).json({
-    reply: "🔥 backend funcionando"
-  });
+  try {
+    const { message, character } = req.body;
+
+    const ai = new GoogleGenAI({
+      apiKey: process.env.GEMINI_API_KEY
+    });
+
+    const prompt = `
+    Responde como ${character}.
+    Estilo cyberpunk, respuestas cortas.
+
+    Usuario: ${message}
+    `;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+    });
+
+    res.status(200).json({
+      reply: response.text
+    });
+
+  } catch (error) {
+    console.error("🔥 ERROR GEMINI:", error);
+
+    res.status(500).json({
+      error: error.message
+    });
+  }
 }
-
-
-/*import { GoogleGenAI } from "@google/genai";
-
-export default async function handler(req, res) {
-  const { message, character } = req.body;
-
-  const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY
-  });
-
-  // 🎭 PERSONALIDAD DEL BOT
-  const prompt = `
-  Responde como ${character}.
-  Mantén personalidad, estilo cyberpunk y respuestas cortas.
-
-  Usuario: ${message}
-  `;
-
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
-
-  res.status(200).json({
-    reply: response.text
-  });
-}*/
