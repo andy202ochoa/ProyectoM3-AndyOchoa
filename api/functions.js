@@ -11,15 +11,15 @@ Estilo cyberpunk, respuestas cortas.
 Usuario: ${message}
 `;
 
-    // 1. Cambiamos la URL para no pasar la llave AQ en la URL expuesta y usamos v1beta
+    // 1. Usamos el endpoint v1beta oficial
     const url = "https://googleapis.com";
 
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // 2. Pasamos la API Key AQ de forma segura en los headers recomendados por Google
-        "Authorization": `Bearer ${process.env.GEMINI_API_KEY}`
+        // 2. CORRECCIÓN CLAVE: Las llaves AQ. exigen este header específico en lugar de Bearer
+        "x-goog-api-key": process.env.GEMINI_API_KEY 
       },
       body: JSON.stringify({
         contents: [
@@ -34,13 +34,15 @@ Usuario: ${message}
 
     console.log("📦 RESPUESTA COMPLETA:", JSON.stringify(data, null, 2));
 
-    // 3. Manejo de errores si Google responde algo mal (ej: API key inválida)
+    // 3. Si Google devuelve un error estructurado, lo capturamos
     if (data.error) {
-      return res.status(data.error.code || 400).json({ error: data.error.message });
+      return res.status(data.error.code || 400).json({ 
+        error: `Error de Google: ${data.error.message}` 
+      });
     }
 
-    // 4. Extraemos el texto limpio del JSON estructurado de Gemini
-    const botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta.";
+    // 4. Extracción limpia y segura del texto
+    const botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta del modelo.";
 
     res.status(200).json({
       reply: botReply 
