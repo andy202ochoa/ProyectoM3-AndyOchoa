@@ -1,10 +1,11 @@
-// 1. Importamos el SDK oficial de Google GenAI
-import { GoogleGenAI } from '@google/genai';
+// 1. Importación nativa mediante require (Obligatorio en CommonJS)
+const { GoogleGenAI } = require('@google/genai');
 
-// 2. Inicializamos el cliente. El SDK toma automáticamente process.env.GEMINI_API_KEY
+// 2. Inicializamos el cliente oficial de Google
 const ai = new GoogleGenAI();
 
-export default async function handler(req, res) {
+// 3. Exportación tradicional para Serverless Functions en Node.js estándar
+module.exports = async (req, res) => {
   try {
     const { message, character } = req.body;
 
@@ -17,13 +18,12 @@ Estilo cyberpunk, respuestas cortas.
 Usuario: ${message}
 `;
 
-    // 3. Llamada nativa usando el SDK oficial (Evita errores de URLs manuales)
+    // 4. Invocación limpia mediante el SDK oficial
     const response = await ai.models.generateContent({
       model: 'gemini-1.5-flash',
       contents: prompt,
     });
 
-    // 4. El SDK nos entrega el texto limpio directamente en la propiedad .text
     const botReply = response.text || "Sin respuesta del modelo.";
 
     res.status(200).json({
@@ -36,4 +36,4 @@ Usuario: ${message}
       error: error.message
     });
   }
-}
+};
