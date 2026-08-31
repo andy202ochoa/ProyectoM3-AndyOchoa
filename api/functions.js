@@ -11,10 +11,14 @@ Estilo cyberpunk, respuestas cortas.
 Usuario: ${message}
 `;
 
-    // Unimos la URL y la llave usando concatenación clásica
-    const url = "https://googleapis.com" + process.env.GEMINI_API_KEY;
+    // CORRECCIÓN RADICAL: Separamos por completo la URL base de la API Key. 
+    // Es imposible que se junten como 'googleapis.comaq...' porque el dominio termina con un path limpio y un signo '?'.
+    const baseUrl = "https://googleapis.com";
+    const apiKey = process.env.GEMINI_API_KEY;
+    
+    const urlCompleta = baseUrl + "?key=" + apiKey;
 
-    const response = await fetch(url, {
+    const response = await fetch(urlCompleta, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -45,7 +49,6 @@ Usuario: ${message}
       });
     }
 
-    // CORRECCIÓN DE SINTAXIS: Encadenamiento opcional simple y limpio
     let botReply = "Sin respuesta del modelo.";
     if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
       botReply = data.candidates[0].content.parts[0].text;
@@ -62,4 +65,3 @@ Usuario: ${message}
     });
   }
 };
-// Comentario para forzar actualización de caché en el servidor
