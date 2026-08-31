@@ -6,8 +6,7 @@ export default class Chat {
         id: 1,
         name: "David Martinez",
         messages: [
-          { role: "bot", text: "Wake the f*** up, samurai." },
-          { role: "user", text: "What do you want, Johnny?" }
+          { role: "bot", text: "Wake the f*** up, samurai." }
         ]
       },
       {
@@ -44,7 +43,7 @@ export default class Chat {
         />
         <div id="searchResults" class="searchResults"></div>
 
-        <!-- SIDEBAR (tablet/desktop) -->
+        <!-- SIDEBAR -->
         <aside class="chatSidebar">
 
           <input 
@@ -107,15 +106,12 @@ export default class Chat {
     const searchDesktop = document.getElementById("searchChat");
     const searchMobile = document.getElementById("searchMobile");
     const resultsContainer = document.getElementById("searchResults");
-    
+
     const scrollToBottom = () => {
       const container = document.querySelector(".chatMessages");
       if (!container) return;
-
       container.scrollTop = container.scrollHeight;
     };
-
-    
 
     // ================= UTIL =================
     const filterChats = (query) => {
@@ -134,7 +130,7 @@ export default class Chat {
       });
     }
 
-    // ================= MOBILE SEARCH + SUGGESTIONS =================
+    // ================= MOBILE SEARCH =================
     if (searchMobile) {
       searchMobile.addEventListener("input", () => {
         const query = searchMobile.value.toLowerCase();
@@ -153,7 +149,6 @@ export default class Chat {
 
           div.addEventListener("click", () => {
             this.activeChat = chat;
-
             document.getElementById("app").innerHTML = this.getHtml();
             this.afterRender();
           });
@@ -162,7 +157,6 @@ export default class Chat {
         });
       });
 
-      // limpiar sugerencias al salir
       searchMobile.addEventListener("blur", () => {
         setTimeout(() => {
           resultsContainer.innerHTML = "";
@@ -176,7 +170,6 @@ export default class Chat {
       if (!item) return;
 
       const id = Number(item.dataset.id);
-
       this.activeChat = this.chats.find(c => c.id === id);
 
       document.getElementById("app").innerHTML = this.getHtml();
@@ -190,67 +183,41 @@ export default class Chat {
       const mensaje = input.value.trim();
       if (!mensaje) return;
 
+      // mensaje usuario
       this.activeChat.messages.push({
         role: "user",
         text: mensaje
       });
 
-      // 👉 mensaje temporal (typing...)
-        this.activeChat.messages.push({
-          role: "bot",
-          text: "..."
-        });
+      // typing
+      this.activeChat.messages.push({
+        role: "bot",
+        text: "..."
+      });
 
-        // 👉 render inmediato
+      input.value = "";
+
+      document.getElementById("app").innerHTML = this.getHtml();
+      this.afterRender();
+
+      setTimeout(scrollToBottom, 0);
+
+      // 👉 simulación de respuesta IA
+      setTimeout(() => {
+        const lastIndex = this.activeChat.messages.length - 1;
+
+        this.activeChat.messages[lastIndex] = {
+          role: "bot",
+          text: "🤖 Funcionando..."
+        };
+
         document.getElementById("app").innerHTML = this.getHtml();
         this.afterRender();
 
-        input.value = "";
-
-        // 👉 llamada a Gemini
-        fetch("/api", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            message: mensaje,
-            character: this.activeChat.name
-          })
-        })
-        .then(res => {
-          if (!res.ok) {
-            throw new Error("Error del servidor");
-          }
-          return res.json();
-        })
-        .then(data => {
-
-          const lastIndex = this.activeChat.messages.length - 1;
-
-          this.activeChat.messages[lastIndex] = {
-            role: "bot",
-            text: data.reply || "⚠️ Sin respuesta"
-          };
-
-          document.getElementById("app").innerHTML = this.getHtml();
-          this.afterRender();
-        })
-        .catch((error) => {
-
-          const lastIndex = this.activeChat.messages.length - 1;
-
-          this.activeChat.messages[lastIndex] = {
-            role: "bot",
-            text: "⚠️ No se pudo conectar con la IA"
-          };
-
-          document.getElementById("app").innerHTML = this.getHtml();
-          this.afterRender();
-
-          console.error("Error:", error);
-        });
+        setTimeout(scrollToBottom, 0);
+      }, 800);
     });
+
     setTimeout(scrollToBottom, 0);
   }
 }
