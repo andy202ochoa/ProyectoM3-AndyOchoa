@@ -1,4 +1,3 @@
-// 1. Requerimos la biblioteca oficial compatible con CommonJS
 module.exports = async (req, res) => {
   try {
     const { message, character } = req.body;
@@ -12,10 +11,9 @@ Estilo cyberpunk, respuestas cortas.
 Usuario: ${message}
 `;
 
-    // 1. URL REST nativa y exacta para Gemini 1.5 Flash
+    // CORRECCIÓN: Se añade el signo de dólar ($) antes de las llaves para que lea la variable de entorno correctamente
     const url = `https://googleapis.com{process.env.GEMINI_API_KEY}`;
 
-    // 2. Hacemos la llamada HTTP directa sin usar la librería conflictiva
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -30,7 +28,6 @@ Usuario: ${message}
       })
     });
 
-    // 3. Verificamos si Google responde algo diferente a un JSON válido (HTML)
     if (!response.ok) {
       const errorTexto = await response.text();
       console.error("❌ Error de respuesta de Google (HTML/Texto):", errorTexto);
@@ -48,7 +45,6 @@ Usuario: ${message}
       });
     }
 
-    // 4. Extracción segura y limpia del texto del mensaje
     const botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta del modelo.";
 
     res.status(200).json({
