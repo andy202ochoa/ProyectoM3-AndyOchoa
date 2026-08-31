@@ -11,8 +11,8 @@ Estilo cyberpunk, respuestas cortas.
 Usuario: ${message}
 `;
 
-    // CORRECCIÓN: Se añade el signo de dólar ($) antes de las llaves para que lea la variable de entorno correctamente
-    const url = `https://googleapis.com{process.env.GEMINI_API_KEY}`;
+    // Unimos la URL y la llave usando concatenación clásica
+    const url = "https://googleapis.com" + process.env.GEMINI_API_KEY;
 
     const response = await fetch(url, {
       method: "POST",
@@ -30,9 +30,9 @@ Usuario: ${message}
 
     if (!response.ok) {
       const errorTexto = await response.text();
-      console.error("❌ Error de respuesta de Google (HTML/Texto):", errorTexto);
+      console.error("❌ Error de respuesta de Google:", errorTexto);
       return res.status(response.status).json({
-        error: `Google respondió con estado ${response.status}.`
+        error: "Google respondió con estado " + response.status
       });
     }
 
@@ -41,19 +41,23 @@ Usuario: ${message}
 
     if (data.error) {
       return res.status(data.error.code || 400).json({ 
-        error: `Error interno de la API: ${data.error.message}` 
+        error: "Error interno de la API: " + data.error.message
       });
     }
 
-    const botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta del modelo.";
+    // CORRECCIÓN DE SINTAXIS: Encadenamiento opcional simple y limpio
+    let botReply = "Sin respuesta del modelo.";
+    if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+      botReply = data.candidates[0].content.parts[0].text;
+    }
 
-    res.status(200).json({
+    return res.status(200).json({
       reply: botReply 
     });
 
   } catch (error) {
     console.error("🔥 ERROR GENERAL DEL BACKEND:", error);
-    res.status(500).json({
+    return res.status(500).json({
       error: error.message
     });
   }
