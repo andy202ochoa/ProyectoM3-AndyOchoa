@@ -1,15 +1,15 @@
-// 1. Importación nativa mediante require (Obligatorio en CommonJS)
+// 1. Requerimos la biblioteca oficial compatible con CommonJS
 const { GoogleGenAI } = require('@google/genai');
 
-// 2. Inicializamos el cliente oficial de Google
-const ai = new GoogleGenAI();
-
-// 3. Exportación tradicional para Serverless Functions en Node.js estándar
 module.exports = async (req, res) => {
   try {
     const { message, character } = req.body;
 
     console.log("🔑 KEY:", process.env.GEMINI_API_KEY ? "EXISTE" : "NO EXISTE");
+
+    // 2. CORRECCIÓN CLAVE: Instanciamos el cliente DENTRO de la función para asegurar
+    // que la API Key inyectada por Vercel sea leída en tiempo de ejecución de la solicitud.
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
     const prompt = `
 Responde como ${character}.
@@ -18,7 +18,7 @@ Estilo cyberpunk, respuestas cortas.
 Usuario: ${message}
 `;
 
-    // 4. Invocación limpia mediante el SDK oficial
+    // 3. Ejecutamos la llamada al modelo estándar
     const response = await ai.models.generateContent({
       model: 'gemini-1.5-flash',
       contents: prompt,
