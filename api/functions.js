@@ -11,12 +11,13 @@ Estilo cyberpunk, respuestas cortas.
 Usuario: ${message}
 `;
 
-    // CORRECCIÓN RADICAL: Separamos por completo la URL base de la API Key. 
-    // Es imposible que se junten como 'googleapis.comaq...' porque el dominio termina con un path limpio y un signo '?'.
+    // 1. Limpiamos la API Key de cualquier espacio o salto de línea invisible
+    const apiKeyLimpia = (process.env.GEMINI_API_KEY || "").trim();
+
     const baseUrl = "https://googleapis.com";
-    const apiKey = process.env.GEMINI_API_KEY;
     
-    const urlCompleta = baseUrl + "?key=" + apiKey;
+    // 2. Construimos la URL con la clave perfectamente saneada
+    const urlCompleta = baseUrl + "?key=" + apiKeyLimpia;
 
     const response = await fetch(urlCompleta, {
       method: "POST",
