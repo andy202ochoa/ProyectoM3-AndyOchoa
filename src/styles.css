@@ -15,7 +15,7 @@ html, body {
   margin: 0;
   overflow-x: hidden; 
 }
-.navbar{
+.navbar {
   display: flex;
   gap: 20px;
   padding: 15px;
@@ -24,6 +24,7 @@ html, body {
   position: sticky;
   top: 0;
   z-index: 1000;
+  height: 50px; 
 }
 .navbar a {
   color: rgb(0, 234, 255);
@@ -31,7 +32,12 @@ html, body {
 }
 /* CONTENEDOR SPA */
 #app {
-  min-height: calc(100dvh - 60px);
+  height: calc(100dvh - 50px); 
+  min-height: auto;
+  padding: 0;
+  overflow: hidden;
+}
+.home, .about {
   padding: 10px;
 }
 
@@ -40,7 +46,8 @@ html, body {
 .chatLayout {
   display: flex;
   flex-direction: column;
-  height: 100dvh; /* mejor que 100vh en móvil */
+  height: 100%;               
+  min-height: 0;
 }
 
 /* CYBERPUNK THEME */
@@ -67,12 +74,13 @@ html, body {
 }
 
 .mobileSearch {
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  display: flex;   
+  align-items: center;
   background: #0f0f0f;
   padding: 10px;
   border-bottom: 1px solid #333;
+  flex-shrink: 0;   
+  
 }
 
 /* LISTA DE CHATS */
@@ -120,25 +128,32 @@ html, body {
   display: flex;
   flex-direction: column;
   flex: 1;
+  height: 100%;       /* Ocupa el 100% de .chatLayout */
+  min-height: 0;      /* CRÍTICO: Permite que los hijos Flex se reduzcan y activen el scroll */
   overflow: hidden;
 }
 
 /* HEADER CHAT */
 .chatMain h2 {
-  position: sticky;
-  top: 50px;
-  z-index: 10;
-  background: #0f0f0f;
-  margin: 0;
+  position: relative;
+  top: 0;
+  z-index: 10; 
+  background: #0f0f0f; 
+  margin: 0;      
   padding: 10px;
+  border-bottom: 1px solid #222;
+  flex-shrink: 0; 
 }
 
 /* MENSAJES */
 .chatMessages {
-  flex: 1;
+  display: flex;             
   flex-direction: column;
-  overflow-y: auto;
-  padding: 10px;
+  gap: 10px;                  
+  flex: 1;                    
+  min-height: 0;            
+  overflow-y: auto;           
+  padding: 10px;  
 }
 
 /* MENSAJE BOT */
@@ -168,15 +183,18 @@ html, body {
   width: fit-content;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  display: inline-block;
 }
 
 /* FORMULARIO */
 .chatComposer {
-  position: sticky;
-  bottom: 0;
+  display: flex;        
+  gap: 10px;           
+  width: 100%;
   background: #0f0f0f;
   padding: 10px;
   border-top: 1px solid #333;
+  flex-shrink: 0;
 }
 
 /* INPUT */
@@ -483,10 +501,14 @@ html, body {
   }
 /*-----------------CHAT-------------------*/
   #app {
-    padding: 20px;
+    padding: 20px; /* Recupera el padding solo en tablet/desktop */
+    height: auto;
+    min-height: calc(100dvh - 60px);
+    overflow: visible;
   }
   .chatLayout {
     flex-direction: row;
+    height: calc(100dvh - 100px); /* Altura fija para el chat en desktop */
   }
 
   .chatSidebar {
