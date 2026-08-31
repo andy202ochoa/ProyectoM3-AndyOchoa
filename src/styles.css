@@ -135,29 +135,33 @@ html, body {
 
 /* MENSAJES */
 .chatMessages {
-  display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: 10px;
+  overflow-y: auto;
+  padding: 10px;
 }
 
 /* MENSAJE BOT */
 .chatBot {
   align-self: flex-start;
   max-width: 70%;
-  padding: 10px;
-  border: 1px solid cyan;
-  border-radius: 12px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #111;
+  border: 1px solid #00f0ff;
+  color: #00f0ff;
 }
 
 /* MENSAJE USUARIO */
 .chatUser {
-  align-self: flex-end;
-  max-width: 70%;
-  padding: 10px;
-  border-radius: 12px;
   background: linear-gradient(45deg, magenta, purple);
+  max-width: 70%;
+  align-self: flex-end;
   color: white;
+  border-radius: 10px;
+  padding: 8px 12px;
 }
+
 /* TEXTO LARGO */
 .chatBot,
 .chatUser {
@@ -496,6 +500,15 @@ html, body {
   .chatMain h2 {
     top: 0; /* ya no hay search arriba */
   }
+  .chatMessages {
+    padding: 20px;
+    gap: 15px;
+  }
+  .chatBot,
+  .chatUser {
+    max-width: 60%; /* más ancho porque hay más espacio */
+    font-size: 15px;
+  }
   /*-----------------HOME-------------------*/
    .homeTitle {
     font-size: 28px;
@@ -540,6 +553,20 @@ html, body {
   }
   .chatSidebar {
     width: 300px;
+  }
+  .chatMain {
+    display: flex;
+    justify-content: center; /* centra el chat */
+  }
+  .chatMessages {
+    width: 100%;
+    max-width: 800px; /* limita ancho como WhatsApp Web */
+    margin: 0 auto;
+  }
+  .chatBot,
+  .chatUser {
+    max-width: 50%;
+    font-size: 16px;
   }
   /*-----------------HOME-------------------*/
    .homeContainer {
