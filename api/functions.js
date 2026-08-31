@@ -11,18 +11,15 @@ Estilo cyberpunk, respuestas cortas.
 Usuario: ${message}
 `;
 
-    // 1. Limpiamos la API Key de cualquier espacio o salto de línea invisible
-    const apiKeyLimpia = (process.env.GEMINI_API_KEY || "").trim();
+    // 1. Dejamos la URL limpia sin parámetros para evitar que se rompa la ruta
+    const url = "https://googleapis.com";
 
-    const baseUrl = "https://googleapis.com";
-    
-    // 2. Construimos la URL con la clave perfectamente saneada
-    const urlCompleta = baseUrl + "?key=" + apiKeyLimpia;
-
-    const response = await fetch(urlCompleta, {
+    const response = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        // 2. Pasamos la API Key de forma ultra segura aquí, limpiando cualquier espacio
+        "x-goog-api-key": (process.env.GEMINI_API_KEY || "").trim()
       },
       body: JSON.stringify({
         contents: [
