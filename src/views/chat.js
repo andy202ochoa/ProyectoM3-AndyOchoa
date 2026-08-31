@@ -208,7 +208,7 @@ export default class Chat {
         input.value = "";
 
         // 👉 llamada a Gemini
-        fetch("/api/functions", {
+        fetch("/api", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -249,7 +249,7 @@ export default class Chat {
           this.afterRender();
 
           console.error("Error:", error);
-});
+        });
     });
     setTimeout(scrollToBottom, 0);
   }
