@@ -221,3 +221,4 @@ export default class Chat {
     setTimeout(scrollToBottom, 0);
   }
 }
+/*todo funcional sin gemini listo para deploy*/
