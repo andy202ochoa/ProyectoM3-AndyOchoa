@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/andy202ochoa/ProyectoM3-AndyOchoa#readme",
   "dependencies": {
-    "@google/genai": "^2.19.0",
+    "@google/genai": "^2.20.0",
     "axios": "^1.20.0"
   }
 }
