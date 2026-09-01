@@ -1,5 +1,5 @@
 export default class Chat {
-
+ 
   constructor() {
     this.chats = [
       {
@@ -24,16 +24,16 @@ export default class Chat {
         ]
       },
     ];
-
+ 
     this.filteredChats = this.chats;
     this.activeChat = this.chats[0];
   }
-
+ 
   // ================= HTML =================
   getHtml() {
     return `
       <div class="chatLayout cyber">
-
+ 
         <!-- 🔥 MOBILE SEARCH -->
         <input 
           type="text" 
@@ -42,42 +42,42 @@ export default class Chat {
           class="chatSearch mobileSearch"
         />
         <div id="searchResults" class="searchResults"></div>
-
+ 
         <!-- SIDEBAR -->
         <aside class="chatSidebar">
-
+ 
           <input 
             type="text" 
             id="searchChat"
             placeholder="Buscar en Night City..."
             class="chatSearch"
           />
-
+ 
           <div id="chatList">
             ${this.renderChatList(this.filteredChats)}
           </div>
         </aside>
-
+ 
         <!-- CHAT -->
         <section class="chatMain">
-
+ 
           <h2>💬 ${this.activeChat.name}</h2>
-
+ 
           <div class="chatMessages">
             ${this.renderMessages(this.activeChat.messages)}
           </div>
-
+ 
           <form id="chatForm" class="chatComposer">
             <input id="chatInput" type="text" placeholder="Escribe..." />
             <button type="submit">Enviar</button>
           </form>
-
+ 
         </section>
-
+ 
       </div>
     `;
   }
-
+ 
   // ================= MESSAGES =================
   renderMessages(messages) {
     return messages.map(m => `
@@ -86,7 +86,7 @@ export default class Chat {
       </div>
     `).join("");
   }
-
+ 
   // ================= CHAT LIST =================
   renderChatList(chats) {
     return chats.map(chat => `
@@ -95,130 +95,152 @@ export default class Chat {
       </div>
     `).join("");
   }
-
+ 
   // ================= AFTER RENDER =================
   afterRender() {
-
+ 
     const chatList = document.getElementById("chatList");
     const form = document.getElementById("chatForm");
     const input = document.getElementById("chatInput");
-
+ 
     const searchDesktop = document.getElementById("searchChat");
     const searchMobile = document.getElementById("searchMobile");
     const resultsContainer = document.getElementById("searchResults");
-
+ 
     const scrollToBottom = () => {
       const container = document.querySelector(".chatMessages");
       if (!container) return;
       container.scrollTop = container.scrollHeight;
     };
-
+ 
     // ================= UTIL =================
     const filterChats = (query) => {
       return this.chats.filter(c =>
         c.name.toLowerCase().includes(query)
       );
     };
-
+ 
     // ================= DESKTOP SEARCH =================
     if (searchDesktop) {
       searchDesktop.addEventListener("input", () => {
         const query = searchDesktop.value.toLowerCase();
-
+ 
         this.filteredChats = filterChats(query);
         chatList.innerHTML = this.renderChatList(this.filteredChats);
       });
     }
-
+ 
     // ================= MOBILE SEARCH =================
     if (searchMobile) {
       searchMobile.addEventListener("input", () => {
         const query = searchMobile.value.toLowerCase();
-
+ 
         resultsContainer.innerHTML = "";
-
+ 
         if (!query) return;
-
+ 
         const filtered = filterChats(query);
-
+ 
         filtered.forEach(chat => {
           const div = document.createElement("div");
           div.classList.add("searchItem");
           div.textContent = chat.name;
           div.dataset.id = chat.id;
-
+ 
           div.addEventListener("click", () => {
             this.activeChat = chat;
             document.getElementById("app").innerHTML = this.getHtml();
             this.afterRender();
           });
-
+ 
           resultsContainer.appendChild(div);
         });
       });
-
+ 
       searchMobile.addEventListener("blur", () => {
         setTimeout(() => {
           resultsContainer.innerHTML = "";
         }, 150);
       });
     }
-
+ 
     // ================= CHANGE CHAT =================
     chatList.addEventListener("click", (e) => {
       const item = e.target.closest(".chatItem");
       if (!item) return;
-
+ 
       const id = Number(item.dataset.id);
       this.activeChat = this.chats.find(c => c.id === id);
-
+ 
       document.getElementById("app").innerHTML = this.getHtml();
       this.afterRender();
     });
-
+ 
     // ================= SEND MESSAGE =================
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-
+ 
       const mensaje = input.value.trim();
       if (!mensaje) return;
-
+ 
       // mensaje usuario
       this.activeChat.messages.push({
         role: "user",
         text: mensaje
       });
-
+ 
       // typing
       this.activeChat.messages.push({
         role: "bot",
         text: "..."
       });
-
+ 
       input.value = "";
-
+ 
       document.getElementById("app").innerHTML = this.getHtml();
       this.afterRender();
-
+ 
       setTimeout(scrollToBottom, 0);
-
-      // 👉 simulación de respuesta IA
-      setTimeout(() => {
-        const lastIndex = this.activeChat.messages.length - 1;
-
-        this.activeChat.messages[lastIndex] = {
-          role: "bot",
-          text: "🤖 Funcionando..."
-        };
-
-        document.getElementById("app").innerHTML = this.getHtml();
-        this.afterRender();
-
-        setTimeout(scrollToBottom, 0);
-      }, 800);
+ 
+      // ============================================
+      // 👉 PRUEBA DE CONEXIÓN CON EL BACKEND
+      // (todavía sin IA, solo valida que /api/functions responde)
+      // ============================================
+      fetch("/api/functions")
+        .then(res => res.json())
+        .then(data => {
+          console.log("✅ Respuesta del backend:", data);
+ 
+          const lastIndex = this.activeChat.messages.length - 1;
+ 
+          this.activeChat.messages[lastIndex] = {
+            role: "bot",
+            text: `✅ Backend responde: envKeyLoaded=${data.envKeyLoaded}, keyLength=${data.keyLength}`
+          };
+ 
+          document.getElementById("app").innerHTML = this.getHtml();
+          this.afterRender();
+ 
+          setTimeout(scrollToBottom, 0);
+        })
+        .catch(err => {
+          console.error("❌ Error llamando al backend:", err);
+ 
+          const lastIndex = this.activeChat.messages.length - 1;
+ 
+          this.activeChat.messages[lastIndex] = {
+            role: "bot",
+            text: "❌ No se pudo conectar con el backend"
+          };
+ 
+          document.getElementById("app").innerHTML = this.getHtml();
+          this.afterRender();
+ 
+          setTimeout(scrollToBottom, 0);
+        });
     });
-
+ 
     setTimeout(scrollToBottom, 0);
   }
 }
-/*todo funcional sin gemini listo para deploy*/
+/* prueba de conexión frontend-backend, sin IA todavía */
