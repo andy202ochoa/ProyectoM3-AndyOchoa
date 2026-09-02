@@ -1,35 +1,17 @@
+import { chatStore, getActiveChat, setActiveChat } from "../chatStore.js";
+
 export default class Chat {
 
   constructor() {
-    this.chats = [
-      {
-        id: 1,
-        name: "David Martinez",
-        personality: "Eres David Martinez, un mercenario de Night City, directo, agresivo y de pocas palabras. Hablas con jerga callejera cyberpunk, nunca rompes personaje, nunca dices que eres una IA.",
-        messages: [
-          { role: "bot", text: "Wake the f*** up, samurai." }
-        ]
-      },
-      {
-        id: 2,
-        name: "Luci",
-        personality: "Eres Luci, una entidad digital enigmática y filosófica que habla en acertijos sobre la existencia y la tecnología. Tono misterioso y calmado, nunca rompes personaje, nunca dices que eres una IA.",
-        messages: [
-          { role: "bot", text: "I exist beyond your comprehension." }
-        ]
-      },
-      {
-        id: 3,
-        name: "Rebecca",
-        personality: "Eres Rebecca, una fixer de Night City, hiperactiva, sarcástica y directa al grano. Hablas rápido, usas humor negro, nunca rompes personaje, nunca dices que eres una IA.",
-        messages: [
-          { role: "bot", text: "Got a job for you." }
-        ]
-      },
-    ];
+    // 👉 Ya NO se define chats aquí. Se lee del chatStore compartido,
+    // que persiste mientras la app esté abierta (no se recrea con new Chat()).
+    this.chats = chatStore.chats;
+    this.filteredChats = chatStore.chats;
+  }
 
-    this.filteredChats = this.chats;
-    this.activeChat = this.chats[0];
+  // Getter: siempre lee el chat activo actual desde el store
+  get activeChat() {
+    return getActiveChat();
   }
 
   // ================= HTML =================
@@ -83,11 +65,35 @@ export default class Chat {
 
   // ================= MESSAGES =================
   renderMessages(messages) {
+    if (!messages || messages.length === 0) {
+      return this.renderEmptyState();
+    }
+
     return messages.map(m => `
       <div class="${m.role === "bot" ? "chatBot" : "chatUser"}">
-        ${m.text}
+        ${m.text === "__typing__" ? this.renderTypingIndicator() : m.text}
       </div>
     `).join("");
+  }
+
+  // ================= EMPTY STATE =================
+  renderEmptyState() {
+    return `
+      <div class="chatEmptyState">
+        <div class="chatEmptyIcon">💬</div>
+        <p class="chatEmptyText">Aún no hay mensajes con ${this.activeChat.name}</p>
+        <p class="chatEmptySubtext">Escribe algo para iniciar la conversación</p>
+      </div>
+    `;
+  }
+
+  // ================= TYPING INDICATOR =================
+  renderTypingIndicator() {
+    const word = "Typing...";
+    const letters = word.split("")
+      .map(char => `<span>${char === " " ? "&nbsp;" : char}</span>`)
+      .join("");
+    return `<span class="typingWave">${letters}</span>`;
   }
 
   // ================= CHAT LIST =================
@@ -114,6 +120,11 @@ export default class Chat {
       const container = document.querySelector(".chatMessages");
       if (!container) return;
       container.scrollTop = container.scrollHeight;
+    };
+
+    const rerender = () => {
+      document.getElementById("app").innerHTML = this.getHtml();
+      this.afterRender();
     };
 
     // ================= UTIL =================
@@ -151,9 +162,8 @@ export default class Chat {
           div.dataset.id = chat.id;
 
           div.addEventListener("click", () => {
-            this.activeChat = chat;
-            document.getElementById("app").innerHTML = this.getHtml();
-            this.afterRender();
+            setActiveChat(chat.id);
+            rerender();
           });
 
           resultsContainer.appendChild(div);
@@ -173,10 +183,8 @@ export default class Chat {
       if (!item) return;
 
       const id = Number(item.dataset.id);
-      this.activeChat = this.chats.find(c => c.id === id);
-
-      document.getElementById("app").innerHTML = this.getHtml();
-      this.afterRender();
+      setActiveChat(id);
+      rerender();
     });
 
     // ================= SEND MESSAGE =================
@@ -186,23 +194,22 @@ export default class Chat {
       const mensaje = input.value.trim();
       if (!mensaje) return;
 
+      const currentChat = this.activeChat;
+
       // mensaje usuario
-      this.activeChat.messages.push({
+      currentChat.messages.push({
         role: "user",
         text: mensaje
       });
 
-      // typing
-      this.activeChat.messages.push({
+      // typing (animación de ola)
+      currentChat.messages.push({
         role: "bot",
-        text: "..."
+        text: "__typing__"
       });
 
       input.value = "";
-
-      document.getElementById("app").innerHTML = this.getHtml();
-      this.afterRender();
-
+      rerender();
       setTimeout(scrollToBottom, 0);
 
       // ============================================
@@ -213,36 +220,32 @@ export default class Chat {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: mensaje,
-          personality: this.activeChat.personality
+          personality: currentChat.personality
         })
       })
         .then(res => res.json())
         .then(data => {
-          const lastIndex = this.activeChat.messages.length - 1;
+          const lastIndex = currentChat.messages.length - 1;
 
-          this.activeChat.messages[lastIndex] = {
+          currentChat.messages[lastIndex] = {
             role: "bot",
             text: data.reply || "⚠️ No hubo respuesta del modelo."
           };
 
-          document.getElementById("app").innerHTML = this.getHtml();
-          this.afterRender();
-
+          rerender();
           setTimeout(scrollToBottom, 0);
         })
         .catch(err => {
           console.error("❌ Error llamando al backend:", err);
 
-          const lastIndex = this.activeChat.messages.length - 1;
+          const lastIndex = currentChat.messages.length - 1;
 
-          this.activeChat.messages[lastIndex] = {
+          currentChat.messages[lastIndex] = {
             role: "bot",
             text: "❌ No se pudo conectar con el backend"
           };
 
-          document.getElementById("app").innerHTML = this.getHtml();
-          this.afterRender();
-
+          rerender();
           setTimeout(scrollToBottom, 0);
         });
     });

@@ -185,6 +185,68 @@ html, body {
   overflow-wrap: break-word;
   display: inline-block;
 }
+/* TYPING INDICATOR (efecto ola) */
+.typingWave {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.typingWave span {
+  display: inline-block;
+  animation: waveBounce 1.2s infinite ease-in-out;
+  color: #00f0ff;
+}
+
+.typingWave span:nth-child(1) { animation-delay: 0s; }
+.typingWave span:nth-child(2) { animation-delay: 0.1s; }
+.typingWave span:nth-child(3) { animation-delay: 0.2s; }
+.typingWave span:nth-child(4) { animation-delay: 0.3s; }
+.typingWave span:nth-child(5) { animation-delay: 0.4s; }
+.typingWave span:nth-child(6) { animation-delay: 0.5s; }
+.typingWave span:nth-child(7) { animation-delay: 0.6s; }
+.typingWave span:nth-child(8) { animation-delay: 0.7s; }
+.typingWave span:nth-child(9) { animation-delay: 0.8s; }
+
+@keyframes waveBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+/* EMPTY STATE (sin mensajes aún) */
+.chatEmptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  opacity: 0.6;
+  padding: 40px 20px;
+  color: #00f0ff;
+}
+
+.chatEmptyIcon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.chatEmptyText {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.chatEmptySubtext {
+  font-size: 13px;
+  margin-top: 4px;
+  opacity: 0.7;
+}
 
 /* FORMULARIO */
 .chatComposer {
@@ -531,6 +593,17 @@ html, body {
     max-width: 60%; /* más ancho porque hay más espacio */
     font-size: 15px;
   }
+  .typingWave span {
+    font-size: 15px;
+  }
+
+  .chatEmptyIcon {
+    font-size: 56px;
+  }
+
+  .chatEmptyText {
+    font-size: 18px;
+  }
   /*-----------------HOME-------------------*/
    .homeTitle {
     font-size: 28px;
@@ -589,6 +662,9 @@ html, body {
   .chatUser {
     max-width: 50%;
     font-size: 16px;
+  }
+    .chatEmptyState {
+    padding: 60px 20px;
   }
   /*-----------------HOME-------------------*/
    .homeContainer {
