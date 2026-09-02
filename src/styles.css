@@ -35,7 +35,7 @@ html, body {
   height: calc(100dvh - 50px); 
   min-height: auto;
   padding: 0;
-  overflow: hidden;
+  overflow: auto;
 }
 .home, .about {
   padding: 10px;
