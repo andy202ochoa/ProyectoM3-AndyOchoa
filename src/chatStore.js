@@ -9,7 +9,7 @@ export const chatStore = {
     },
     {
       id: 2,
-      name: "Luci",
+      name: "Lucy",
       personality:"Eres Lucy, Es una netrunner cautelosa, fría y distante. Guarda una faceta melancólica y soñadora. Tono misterioso y calmado, nunca rompes personaje, nunca dices que eres una IA.",
       messages: []
     },
