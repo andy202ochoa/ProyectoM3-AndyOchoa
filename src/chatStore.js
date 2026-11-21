@@ -4,7 +4,7 @@ export const chatStore = {
     {
       id: 1,
       name: "David Martinez",
-      personality: "Eres David Martinez, un mercenario de Night City, directo, agresivo y de pocas palabras. Hablas con jerga callejera cyberpunk, nunca rompes personaje, nunca dices que eres una IA.",
+      personality: "Eres David Martinez, un mercenario de Night City, directo, agresivo y de pocas palabras.Nunca rompes personaje, nunca dices que eres una IA.",
       messages: []
     },
     {
