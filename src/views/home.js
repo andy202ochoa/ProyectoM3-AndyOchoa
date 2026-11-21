@@ -1,3 +1,5 @@
+import { setActiveChat } from "../chatStore.js";
+
 export default class Home {
   getHtml() {
     return `
@@ -14,7 +16,7 @@ export default class Home {
           <div class="characters">
 
             <!-- David -->
-            <div class="characterCard">
+            <div class="characterCard" data-chat-id="1" role="button" tabindex="0">
               <div class="characterImg">
                 <img src="https://i.pinimg.com/originals/6d/c3/f3/6dc3f398a9e4c27b2d197e424ec6ecf7.jpg" alt="David Martinez">
               </div>
@@ -26,7 +28,7 @@ export default class Home {
             </div>
 
             <!-- Lucy -->
-            <div class="characterCard">
+            <div class="characterCard" data-chat-id="2" role="button" tabindex="0">
               <div class="characterImg">
                 <img src="https://cdn.rafled.com/anime-icons/images/6nuiK8b9XPLt.jpg" alt="Lucy">
               </div>
@@ -38,7 +40,7 @@ export default class Home {
             </div>
 
             <!-- Rebecca -->
-            <div class="characterCard">
+            <div class="characterCard" data-chat-id="3" role="button" tabindex="0">
               <div class="characterImg">
                 <img src="https://static0.thegamerimages.com/wordpress/wp-content/uploads/2022/09/cyberpunk-edgerunners-rebecca.jpg?w=1600&h=900&fit=crop" alt="Rebecca">
               </div>
@@ -59,5 +61,25 @@ export default class Home {
 
       </section>
     `;
+  }
+
+  // Al tocar una tarjeta, se abre el chat con ese personaje
+  afterRender() {
+    const openChat = (card) => {
+      setActiveChat(Number(card.dataset.chatId));
+      history.pushState(null, null, "/chat");
+      // El router de app.js escucha "popstate", así que lo disparamos para que renderice /chat
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    };
+
+    document.querySelectorAll(".characterCard[data-chat-id]").forEach((card) => {
+      card.addEventListener("click", () => openChat(card));
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openChat(card);
+        }
+      });
+    });
   }
 }

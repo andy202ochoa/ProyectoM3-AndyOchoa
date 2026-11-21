@@ -111,6 +111,11 @@ html, body {
   z-index: 999;
 }
 
+/* Si no hay resultados, la caja no se muestra (evita la línea azul) */
+.searchResults:empty {
+  display: none;
+}
+
 .searchItem {
   padding: 10px;
   border-bottom: 1px solid #222;
@@ -335,6 +340,7 @@ html, body {
   /* glow */
   box-shadow: 0 0 10px #ff00ff33;
   transition: 0.3s;
+  cursor: pointer; /* la tarjeta abre el chat */
 }
 .characterCard p{
   color:#ff00ff
@@ -580,6 +586,9 @@ html, body {
   }
    .mobileSearch {
     display: none;
+  }
+  .searchResults {
+    display: none; /* el buscador móvil no existe en tablet/desktop */
   }
   .chatMain h2 {
     top: 0; /* ya no hay search arriba */
